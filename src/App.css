@@ -1,0 +1,53 @@
+/* ==========================================================================
+   THEME-AWARE GLOBAL SCROLLBAR SYSTEM
+   ========================================================================== */
+
+/* Define variables based on theme state */
+:root {
+  --scrollbar-track: #ffffff;
+  --scrollbar-thumb: rgba(255, 0, 190, 0.45);
+  --scrollbar-border: #ffffff;
+}
+
+/* Switches colors instantly when the .dark class is active on <html> */
+html.dark {
+  --scrollbar-track: #000000;
+  --scrollbar-thumb: rgba(255, 0, 190, 0.35);
+  --scrollbar-border: #000000;
+}
+
+/* Firefox Support */
+html, body, #root, div, section, main {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track) !important;
+  transition: scrollbar-color 0.3s ease !important;
+}
+
+/* Chrome, Edge, Safari Support */
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+/* Track background changes dynamically */
+::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track) !important;
+  transition: background-color 0.3s ease !important;
+}
+
+/* Thumb color updates dynamically */
+::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb) !important;
+  border-radius: 9999px !important;
+  border: 2px solid var(--scrollbar-border) !important;
+  background-clip: padding-box !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Hover State */
+::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #ff00be !important;
+}
