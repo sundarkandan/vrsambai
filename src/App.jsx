@@ -96,7 +96,7 @@ const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
 export default function App() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [langSelected, setLangSelected] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [lang, setLang] = useState('en');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -159,9 +159,16 @@ export default function App() {
 
   const handleScroll = useCallback((e, id) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+      // Wait for the drawer collapse animation (300ms) before scrolling
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 320);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [mobileMenuOpen]);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 50 },
@@ -183,10 +190,10 @@ export default function App() {
       key="loader"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[100] bg-[#f8f5f2] flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#ff00be22_0%,_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#ff00be18_0%,_transparent_70%)]" />
 
       {/* Drum icon pulse */}
       <motion.div
@@ -202,20 +209,20 @@ export default function App() {
       >VRS MELAM</motion.p>
       <motion.p
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0.5, 1, 0.5] }}
+        animate={{ opacity: [0.4, 0.8, 0.4] }}
         transition={{ repeat: Infinity, duration: 1.8 }}
-        className="text-white/40 text-xs tracking-widest uppercase mb-8"
+        className="text-neutral-400 text-xs tracking-widest uppercase mb-8"
       >Loading Experience…</motion.p>
 
       {/* Progress bar */}
-      <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+      <div className="w-64 h-1 bg-neutral-200 rounded-full overflow-hidden">
         <motion.div
           className="h-full bg-gradient-to-r from-[#ff00be] to-[#ff69d1] rounded-full"
           style={{ width: `${loadProgress}%` }}
           transition={{ duration: 0.3 }}
         />
       </div>
-      <p className="text-white/30 text-xs mt-2 font-mono">{loadProgress}%</p>
+      <p className="text-neutral-400 text-xs mt-2 font-mono">{loadProgress}%</p>
     </motion.div>
   );
 
@@ -224,9 +231,9 @@ export default function App() {
     <motion.div
       key="lang"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }}
-      className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-6"
+      className="fixed inset-0 z-50 bg-[#f8f5f2] flex flex-col items-center justify-center p-6"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#ff00be18_0%,_transparent_65%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#ff00be12_0%,_transparent_65%)]" />
 
       {/* Animated particles behind */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -234,7 +241,7 @@ export default function App() {
           <motion.div key={p.id}
             className="absolute rounded-full bg-[#ff00be]"
             style={{ width: p.size, height: p.size, top: p.top, left: p.left, boxShadow: '0 0 8px #ff00be' }}
-            animate={{ y: [0, -80, 0], opacity: [0.1, p.opacity, 0.1] }}
+            animate={{ y: [0, -80, 0], opacity: [0.05, p.opacity * 0.4, 0.05] }}
             transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }}
           />
         ))}
@@ -251,8 +258,8 @@ export default function App() {
           className="text-5xl mb-6"
         >🥁</motion.div>
 
-        <h1 className="text-white text-3xl font-black tracking-wider mb-1 uppercase">Choose Language</h1>
-        <p className="text-white/50 text-base mb-2">உங்கள் மொழியை தேர்ந்தெடுக்கவும்</p>
+        <h1 className="text-[#0a0a0a] text-3xl font-black tracking-wider mb-1 uppercase">Choose Language</h1>
+        <p className="text-neutral-500 text-base mb-2">உங்கள் மொழியை தேர்ந்தெடுக்கவும்</p>
         <div className="w-12 h-[3px] bg-[#ff00be] mx-auto mb-8 rounded" />
 
         <div className="grid grid-cols-2 gap-4">
@@ -260,10 +267,10 @@ export default function App() {
             <motion.button key={l}
               whileHover={{ scale: 1.04, y: -3 }} whileTap={{ scale: 0.97 }}
               onClick={() => { setLang(l); setLangSelected(true); }}
-              className="group relative py-5 px-4 rounded-2xl border-2 border-white/10 bg-white/5 text-white font-black text-xl
-                         hover:border-[#ff00be]/70 hover:bg-[#ff00be]/10 transition-all duration-300 overflow-hidden"
+              className="group relative py-5 px-4 rounded-2xl border-2 border-neutral-200 bg-white text-[#0a0a0a] font-black text-xl
+                         hover:border-[#ff00be]/60 hover:bg-[#ff00be]/5 transition-all duration-300 overflow-hidden shadow-sm"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#ff00be]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#ff00be]/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <span className="text-2xl block mb-1">{flag}</span>
               {label}
             </motion.button>
