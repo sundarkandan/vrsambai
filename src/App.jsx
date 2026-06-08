@@ -527,17 +527,7 @@ export default function App() {
             </motion.div>
           </div>
 
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          >
-            <p className={`text-xs font-bold tracking-widest uppercase ${darkMode ? 'text-white/30' : 'text-neutral-400'}`}>Scroll</p>
-            <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}
-              className="w-5 h-8 rounded-full border-2 border-[#ff00be]/40 flex items-start justify-center p-1">
-              <div className="w-1 h-2 rounded-full bg-[#ff00be]" />
-            </motion.div>
-          </motion.div>
+        
         </section>
 
         {/* ══════════════════════════════
